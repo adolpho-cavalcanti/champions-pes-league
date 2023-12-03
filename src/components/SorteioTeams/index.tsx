@@ -137,7 +137,7 @@ export default function SorteioTeams() {
       {gerarSorteio ? (
         <>
           <div style={{ display: "flex", gap: "40px", margin: "30px" }}>
-            <div style={{ margin: "40px" }}>
+            <div style={{ margin: "40px 0" }}>
               <span>
                 <strong>Times de Bau</strong>
               </span>
@@ -147,7 +147,7 @@ export default function SorteioTeams() {
                 ))}
               </ul>
             </div>
-            <div style={{ margin: "40px" }}>
+            <div style={{ margin: "40px 0" }}>
               <span>
                 <strong>Times de Dolph</strong>
               </span>
@@ -157,7 +157,7 @@ export default function SorteioTeams() {
                 ))}
               </ul>
             </div>
-            <div style={{ margin: "40px" }}>
+            <div style={{ margin: "40px 0" }}>
               <span>
                 <strong>Times de Nil</strong>
               </span>
@@ -170,7 +170,7 @@ export default function SorteioTeams() {
           </div>
 
           <div style={{ display: "flex", gap: "40px", margin: "30px" }}>
-            <div style={{ margin: "40px" }}>
+            <div style={{ margin: "40px 0" }}>
               <span>
                 <strong>Grupo A</strong>
               </span>
@@ -180,7 +180,7 @@ export default function SorteioTeams() {
                 ))}
               </ul>
             </div>
-            <div style={{ margin: "40px" }}>
+            <div style={{ margin: "40px 0" }}>
               <span>
                 <strong>Grupo B</strong>
               </span>
@@ -190,7 +190,7 @@ export default function SorteioTeams() {
                 ))}
               </ul>
             </div>
-            <div style={{ margin: "40px" }}>
+            <div style={{ margin: "40px 0" }}>
               <span>
                 <strong>Grupo C</strong>
               </span>
@@ -200,7 +200,7 @@ export default function SorteioTeams() {
                 ))}
               </ul>
             </div>
-            <div style={{ margin: "40px" }}>
+            <div style={{ margin: "40px 0" }}>
               <span>
                 <strong>Grupo D</strong>
               </span>
