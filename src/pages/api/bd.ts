@@ -39,4 +39,14 @@ export const jogadores = [
     titulos: [],
     video: "https://www.youtube.com/embed/FunqByTaIOg",
   },
+  {
+    id: 4,
+    nome: "Hebert Dimitrius",
+    posicao: "Atacante",
+    imagem: "/player/pes/dimi.jpg",
+    nacionalidade: { nome: "Brasil", bandeira: "/player/bandeiras/brasil.png" },
+    melhorDoMundo: 0,
+    titulos: [],
+    video: "https://www.youtube.com/embed/FunqByTaIOg",
+  },
 ];

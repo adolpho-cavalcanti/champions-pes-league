@@ -42,6 +42,12 @@ export default class MyDocument extends Document {
 
           <link rel="icon" type="image/x-icon" href="/favicon.ico" />
           <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+            integrity="sha512-w2VVghMMbMKn1JIU3Wl3dxvvjLXLEjZI5ZO5QbPKkgf/MyDy2BQ3NKr55SGR6w3TqLFmfeegVgOPiIc3w3vqnQ=="
+            crossOrigin="anonymous"
+          />
+          <link
             href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap"
             rel="stylesheet"
           ></link>
