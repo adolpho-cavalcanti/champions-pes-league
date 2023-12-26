@@ -36,7 +36,14 @@ export const jogadores = [
     imagem: "/player/pes/nil.jpg",
     nacionalidade: { nome: "Brasil", bandeira: "/player/bandeiras/brasil.png" },
     melhorDoMundo: 0,
-    titulos: [],
+    titulos: [
+      {
+        nome: "Mundial de Clubes",
+        imagem: "/trophy/mundial.png",
+        peso: 8,
+        qtdTitulos: 1,
+      }
+    ],
     video: "https://www.youtube.com/embed/FunqByTaIOg",
   },
   {
