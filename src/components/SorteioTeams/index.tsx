@@ -1,220 +1,187 @@
 import { useState } from "react";
+import CardAnimation from "../Cardanimation";
+import { CardSorteio, TableSorteio, TdSorteio, ThSorteio, TrSorteio } from "../../styles/components/SorteioTeams";
 
 export default function SorteioTeams() {
-  const europa = ["City", "Liverpool", "Bayen"];
-  const sulamerica = ["Boca", "River", "Olimpia"];
-  const brasil = ["Galo", "Grêmio", "Flamengo"];
-  const asia = ["Al Nars", "Inter Miami", "Al Ahli"];
+  const [quantidadeTimes, setQuantidadeTimes] = useState(0);
+  const [quantidadeGrupos, setQuantidadeGrupos] = useState(0);
+  const [nomesJogadores, setNomesJogadores] = useState([]);
+  const [nomesTimes, setNomesTimes] = useState([]);
 
-  const [eur, setEur] = useState(europa);
-  const [sul, setSul] = useState(sulamerica);
-  const [bra, setBra] = useState(brasil);
-  const [asi, setAsi] = useState(asia);
+  const [jogadores, setJogadores] = useState([]);
+  const [grupos, setGrupos] = useState([]);
 
-  let eSort = europa.sort(() => Math.random() - 0.5);
-  let sSort = sulamerica.sort(() => Math.random() - 0.5);
-  let bSort = brasil.sort(() => Math.random() - 0.5);
-  let aSort = asia.sort(() => Math.random() - 0.5);
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    if (name === "quantidadeTimes") {
+      setQuantidadeTimes(parseInt(value, 10));
+    } else if (name === "quantidadeGrupos") {
+      setQuantidadeGrupos(parseInt(value, 10));
+    } else if (name === "nomesJogadores") {
+      setNomesJogadores(value.split(",").map((nome) => nome.trim()));
+    } else if (name === "nomesTimes") {
+      setNomesTimes(value.split(",").map((nome) => nome.trim()));
+    }
+  };
 
-  let bau = [];
-  let dolph = [];
-  let nil = [];
+  const gerarSorteio = () => {
+    // Validar as entradas do usuário
+    if (
+      isNaN(quantidadeTimes) ||
+      isNaN(quantidadeGrupos) ||
+      quantidadeTimes <= 0 ||
+      quantidadeGrupos <= 0 ||
+      nomesJogadores.length === 0 ||
+      nomesTimes.length !== quantidadeTimes
+    ) {
+      console.error("Por favor, insira valores válidos.");
+      return;
+    }
+  
+    // Limpar arrays existentes
+    let jogadores = [];
+    let grupos = [];
+  
+    // Distribuir times entre jogadores
+    for (let i = 0; i < nomesJogadores.length; i++) {
+      jogadores.push({ jogador: nomesJogadores[i], times: [] });
+    }
+  
+    let timesDisponiveis = [...nomesTimes];
+  
+    for (let i = 0; i < quantidadeTimes; i++) {
+      const timeIndex = Math.floor(Math.random() * timesDisponiveis.length);
+      const time = timesDisponiveis[timeIndex];
+  
+      const jogadorIndex = i % nomesJogadores.length;
+      jogadores[jogadorIndex].times.push(time);
+  
+      // Remover o time usado para evitar repetição
+      timesDisponiveis.splice(timeIndex, 1);
+    }
+  
+    // Formar os grupos
+    for (let i = 0; i < quantidadeGrupos; i++) {
+      grupos.push([]);
+    }
+  
+    // Adicionar um time de cada jogador a cada grupo
+    jogadores.forEach(({ jogador, times }) => {
+      for (let i = 0; i < times.length; i++) {
+        const grupoIndex = i % quantidadeGrupos;
+        grupos[grupoIndex].push({ jogador, time: times[i] });
+      }
+    });
+  
+    // Exibir os resultados no console (pode ajustar conforme necessário)
+    console.log("Jogadores e seus times:", jogadores);
+    console.log("Grupos e seus jogadores:", grupos);
 
-  bau.push(eSort[0]);
-  bau.push(sSort[0]);
-  bau.push(bSort[0]);
-  bau.push(aSort[0]);
-
-  dolph.push(eSort[1]);
-  dolph.push(sSort[1]);
-  dolph.push(bSort[1]);
-  dolph.push(aSort[1]);
-
-  nil.push(eSort[2]);
-  nil.push(sSort[2]);
-  nil.push(bSort[2]);
-  nil.push(aSort[2]);
-
-  console.log("Times do Bau", bau);
-  console.log("Times do Dô", dolph);
-  console.log("Times do Nil", nil);
-
-  let gA = [];
-  let gB = [];
-  let gC = [];
-  let gD = [];
-
-  gA.push(bau[0]);
-  gA.push(dolph[1]);
-  gA.push(nil[2]);
-
-  gB.push(bau[1]);
-  gB.push(dolph[2]);
-  gB.push(nil[3]);
-
-  gC.push(bau[2]);
-  gC.push(dolph[3]);
-  gC.push(nil[0]);
-
-  gD.push(bau[3]);
-  gD.push(dolph[0]);
-  gD.push(nil[1]);
-
-  console.log("Grupo A:", gA);
-  console.log("Grupo B:", gB);
-  console.log("Grupo C:", gC);
-  console.log("Grupo D:", gD);
-
-  const [gerarSorteio, setGerarSorteio] = useState(false);
+    setJogadores(jogadores);
+    setGrupos(grupos);
+  };
 
   return (
-    <>
-      <h2>Times</h2>
+    <div style={{width: '100%', padding: '10px'}}>
+      <div>
+        <h2>Configurações do Sorteio</h2>
 
-      <div style={{ display: "flex", gap: "40px", margin: "30px" }}>
-        <div>
-          <h4>Europa</h4>
-          <ul>
-            {eur.map((euro) => (
-              <li key={euro[0]}>{euro}</li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <h4>América do Sul</h4>
-          <ul>
-            {sul.map((sula) => (
-              <li key={sula[0]}>{sula}</li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <h4>Brasil</h4>
-          <ul>
-            {bra.map((br) => (
-              <li key={br[0]}>{br}</li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <h4>Ásia ou USA</h4>
-          <ul>
-            {asi.map((as) => (
-              <li key={as[0]}>{as}</li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      <div style={{ display: "flex", gap: "40px", margin: "30px" }}>
-        {!gerarSorteio ? (
-          <button
-            style={{
-              background: "yellow",
-              padding: "20px 40px",
-              borderRadius: "5px",
-              border: "4px solid",
-            }}
-            onClick={() => setGerarSorteio(true)}
-          >
-            <strong>Gerar Sorteio</strong>
-          </button>
-        ) : (
-          <button
-            style={{
-              background: "orange",
-              padding: "20px 40px",
-              borderRadius: "5px",
-              border: "4px solid",
-            }}
-            onClick={() => setGerarSorteio(false)}
-          >
-            <strong>Resetar Sorteio</strong>
-          </button>
-        )}
-      </div>
-
-      {gerarSorteio ? (
-        <>
-          <div style={{ display: "flex", gap: "40px", margin: "30px" }}>
-            <div style={{ margin: "40px 0" }}>
-              <span>
-                <strong>Times de Bau</strong>
-              </span>
-              <ul>
-                {bau.map((ba) => (
-                  <li key={ba[0]}>{ba}</li>
-                ))}
-              </ul>
-            </div>
-            <div style={{ margin: "40px 0" }}>
-              <span>
-                <strong>Times de Dolph</strong>
-              </span>
-              <ul>
-                {dolph.map((dph) => (
-                  <li key={dph[0]}>{dph}</li>
-                ))}
-              </ul>
-            </div>
-            <div style={{ margin: "40px 0" }}>
-              <span>
-                <strong>Times de Nil</strong>
-              </span>
-              <ul>
-                {nil.map((ni) => (
-                  <li key={ni[0]}>{ni}</li>
-                ))}
-              </ul>
-            </div>
+        <form>
+          <div style={{margin: '10px 0'}}>
+            <label>
+              Quantidade de Times:
+            </label>
+            <input
+              type="number"
+              name="quantidadeTimes"
+              value={quantidadeTimes}
+              onChange={handleInputChange}
+              style={{width: '100%'}}
+            />
           </div>
 
-          <div style={{ display: "flex", gap: "40px", margin: "30px" }}>
-            <div style={{ margin: "40px 0" }}>
-              <span>
-                <strong>Grupo A</strong>
-              </span>
-              <ul>
-                {gA.map((euro) => (
-                  <li key={euro[0]}>{euro}</li>
-                ))}
-              </ul>
-            </div>
-            <div style={{ margin: "40px 0" }}>
-              <span>
-                <strong>Grupo B</strong>
-              </span>
-              <ul>
-                {gB.map((gb) => (
-                  <li key={gb[0]}>{gb}</li>
-                ))}
-              </ul>
-            </div>
-            <div style={{ margin: "40px 0" }}>
-              <span>
-                <strong>Grupo C</strong>
-              </span>
-              <ul>
-                {gC.map((gc) => (
-                  <li key={gc[0]}>{gc}</li>
-                ))}
-              </ul>
-            </div>
-            <div style={{ margin: "40px 0" }}>
-              <span>
-                <strong>Grupo D</strong>
-              </span>
-              <ul>
-                {gD.map((gd) => (
-                  <li key={gd[0]}>{gd}</li>
-                ))}
-              </ul>
-            </div>
+          <div style={{margin: '10px 0'}}>
+            <label>
+              Quantidade de Grupos:
+            </label>
+            <input
+              type="number"
+              name="quantidadeGrupos"
+              value={quantidadeGrupos}
+              onChange={handleInputChange}
+              style={{width: '100%'}}
+            />
           </div>
-        </>
-      ) : (
-        ""
-      )}
-    </>
+
+          <div style={{margin: '10px 0'}}>
+            <label>
+              Nomes dos Jogadores (separados por vírgula):
+            </label>
+            <input
+              type="text"
+              name="nomesJogadores"
+              value={nomesJogadores.join(",")}
+              onChange={handleInputChange}
+              style={{width: '100%', height: '40px'}}
+            />
+          </div>
+
+          <div style={{margin: '10px 0'}}>
+            <label>
+              Nomes dos Times (separados por vírgula):
+            </label>
+            <textarea
+              name="nomesTimes"
+              value={nomesTimes.join(",")}
+              onChange={handleInputChange}
+              style={{width: '100%', height: '80px'}}
+              />
+          </div>
+
+          <button
+            type="button"
+            onClick={gerarSorteio}
+          >
+            Gerar Sorteio
+          </button>
+        </form>
+      </div>
+      <hr style={{
+        margin: "30px 0"
+      }}></hr>
+      <CardSorteio>
+        <h3>Jogadores e seus Times</h3>
+        <TableSorteio>
+          <TrSorteio>
+            {jogadores.map(({ jogador, times }, index) => (
+              <ThSorteio key={index}>{jogador}</ThSorteio>
+            ))}
+          </TrSorteio>
+          <TrSorteio>
+            {jogadores.map(({ jogador, times }, index) => (
+              <TdSorteio key={index}>{times.join(' -  ')}</TdSorteio>
+            ))}
+          </TrSorteio>
+        </TableSorteio>
+      </CardSorteio>
+
+      <CardSorteio>
+        <h3>Grupos</h3>
+        <TableSorteio>
+            <TrSorteio>
+              {grupos.map((grupo, index) => (
+                <ThSorteio key={index}>Grupo {index + 1}</ThSorteio>
+              ))}
+            </TrSorteio>
+            {grupos.length > 0 && grupos[0].map(({ jogador, time }, jogadorIndex) => (
+              <TrSorteio key={jogadorIndex}>
+                {grupos.map((grupo, index) => (
+                  <TdSorteio key={index}>{grupo[jogadorIndex].time}</TdSorteio>
+                ))}
+              </TrSorteio>
+            ))}
+        </TableSorteio>
+      </CardSorteio>
+    </div>
   );
 }
