@@ -11,6 +11,8 @@ export default function SorteioTeams() {
   const [jogadores, setJogadores] = useState([]);
   const [grupos, setGrupos] = useState([]);
 
+  const [aviso, setAviso] = useState(null);
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     if (name === "quantidadeTimes") {
@@ -25,17 +27,40 @@ export default function SorteioTeams() {
   };
 
   const gerarSorteio = () => {
+    // Verificar se a regra de negócio é atendida
+    if (
+      quantidadeTimes % nomesJogadores.length != 0
+    ) {
+      setAviso("A quantidade de times deve ser igual a um número divísivel pela TOTAL DE JOGADORES");
+      return;
+    }
+
+    if (
+      quantidadeGrupos * nomesJogadores.length !== quantidadeTimes
+    ) {
+      setAviso("A quantidade de Grupos tem que ser igual a multiplicação QUANTIDADE DE GRUPOS X TOTAL DE JOGADORES, que tem que ser igual a quantidade de times informada");
+      return;
+    }
+
+    if (
+      nomesTimes.length !== quantidadeTimes
+    ) {
+      setAviso("A QUANTIDADE DE TIMES tem que ser igual a QUANTIDADE DE NOMES DOS TIMES separados por vírgula");
+      return;
+    }
+
+
     // Validar as entradas do usuário
     if (
       isNaN(quantidadeTimes) ||
       isNaN(quantidadeGrupos) ||
       quantidadeTimes <= 0 ||
       quantidadeGrupos <= 0 ||
-      nomesJogadores.length === 0 ||
-      nomesTimes.length !== quantidadeTimes
+      nomesJogadores.length === 0
     ) {
-      console.error("Por favor, insira valores válidos.");
-      return;
+      setAviso("Por favor, insira valores válidos.");
+    } else {
+      setAviso(null);
     }
   
     // Limpar arrays existentes
@@ -85,6 +110,12 @@ export default function SorteioTeams() {
     <div style={{width: '100%', padding: '10px'}}>
       <div>
         <h2>Configurações do Sorteio</h2>
+
+        {aviso && (
+          <div style={{ color: 'red', marginBottom: '10px' }}>
+            {aviso}
+          </div>
+        )}
 
         <form>
           <div style={{margin: '10px 0'}}>
@@ -139,6 +170,19 @@ export default function SorteioTeams() {
           </div>
 
           <button
+            style={{
+              width: '100%',
+              height: '20px',
+              padding: '20px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: 'greenyellow',
+              color: 'black',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer'
+            }}
             type="button"
             onClick={gerarSorteio}
           >
